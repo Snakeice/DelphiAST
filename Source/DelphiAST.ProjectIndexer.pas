@@ -1,9 +1,11 @@
-unit ProjectIndexer;
+unit DelphiAST.ProjectIndexer;
+
+{$IFDEF FPC}{$MODE DELPHI}{$ENDIF}
 
 interface
 
 uses
-  System.Classes, System.Generics.Defaults, System.Generics.Collections,
+  Classes, Generics.Defaults, Generics.Collections,
   SimpleParser.Lexer.Types,
   DelphiAST, DelphiAST.Classes, DelphiAST.Consts;
 
@@ -43,8 +45,6 @@ type
     TParsedUnits = class(TList<TUnitInfo>)
     protected
       procedure Initialize(parsedUnits: TParsedUnitsCache; unitPaths: TUnitPathsCache);
-    public
-      function  Find(const unitName: string; var unitInfo: TUnitInfo): boolean;
     end;
 
     TIncludeFileInfo = record
@@ -137,23 +137,10 @@ type
 implementation
 
 uses
-  System.SysUtils,
+  SysUtils,
   SimpleParser;
 
 { TProjectIndexer.TParsedUnits }
-
-function TProjectIndexer.TParsedUnits.Find(const unitName: string;
-  var unitInfo: TUnitInfo): boolean;
-var
-  iUnit: integer;
-begin
-  Result := false;
-  for iUnit := 0 to Count - 1 do
-    if SameText(Items[iUnit].Name, unitName) then begin
-      unitInfo := Items[iUnit];
-      Exit(true);
-    end;
-end; { TParsedUnits.Find }
 
 procedure TProjectIndexer.TParsedUnits.Initialize(parsedUnits: TParsedUnitsCache;
   unitPaths: TUnitPathsCache);
